@@ -1,36 +1,22 @@
 #!/bin/bash
-# metadata
-# <bitbar.title>Surface connected</bitbar.title>
 
-# Requires blueutil and grep
+# Requires blueutil
 # https://github.com/toy/blueutil
 
-if [ "1" = "0" ]; then
-    mkdir headphones
-    FILE="/Users/francesco/Documents/BitBar Plugins/headphones/headphones_name.txt"
-    PLACEHOLDER="<Insert device name in the txt>"
+# to use a txt file for settings change to 0
+TXT=1
 
-    if [ -f "$FILE" ]; then
-        NAME=$(cat "$FILE")
-    else
-        echo "$PLACEHOLDER" > "$FILE"
-    fi
+# Change this with the exact name of your BT device
+DEVICE="Surface di Francesco"
 
-    if [ "$NAME" != "$PLACEHOLDER" ]; then
-        CONNECTED=$(/usr/local/bin/blueutil --is-connected "$NAME")
-        if [ "$CONNECTED" = "1" ]; then
-            echo -n 🎧
-        else
-            echo -n 🔈
-        fi
-    else
-        echo -n $NAME
-    fi
+CONNECTED=$(/usr/local/bin/blueutil --is-connected "$DEVICE")
+# If the device is connected
+if [ "$CONNECTED" = "1" ]; then
+    echo -n 🎧
+# If it is not
+elif [ "$CONNECTED" = "0" ]; then
+    echo -n 🔈
+# Fallback in case of errors
 else
-    CONNECTED=$(/usr/local/bin/blueutil --is-connected "Surface di Francesco")
-    if [ "$CONNECTED" = "1" ]; then
-        echo -n 🎧
-    else
-        echo -n 🔈
-    fi
+    echo -n "ERROR IN DEVICE CONFIGURATION"
 fi
