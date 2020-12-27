@@ -14,6 +14,9 @@
 # <bitbar.desc>Display currently playing Spotify song. Play/pause, skip forward, skip backward.</bitbar.desc>
 # <bitbar.image>http://i.imgur.com/y1SZwfq.png</bitbar.image>
 
+# Change to the directory where your bitbar plugins are
+USER_PATH="/Users/francesco/Documents/BitBar Plugins"
+
 # Comment the following line to disable showing times.
 SHOW_TIME=1
 
@@ -56,7 +59,7 @@ fi
 
 
 if [ "$1" = 'folder' ]; then
-  open "/Users/francesco/Documents/BitBar Plugins"
+  open "$USER_PATH"
   exit
 fi
 
@@ -88,18 +91,18 @@ album=$(tellspotify 'album of current track as string');
 ## retrieve artwork url and saves it to 'artworklnk'
 artworklnk=$(tellspotify 'artwork url of current track as string');
 ## opens the txt file where the last artwork url is
-oldartlnk="$( cat '/Users/francesco/Documents/BitBar Plugins/spotifytemp/artwork.txt' )"
+oldartlnk=$(cat "$USER_PATH/spotifytemp/artwork.txt")
 ## if the url is different
 if [ "$artworklnk" != "$oldartlnk" ]; then
  ## saves the new artwork in the file
-  echo "$artworklnk" > "/Users/francesco/Documents/BitBar Plugins/spotifytemp/artwork.txt"
+  echo "$artworklnk" > "${USER_PATH}/spotifytemp/artwork.txt"
   ## downloads the new artwork in the temp.jpg
-  curl "$artworklnk" 2>/dev/null > "/Users/francesco/Documents/BitBar Plugins/spotifytemp/temp.jpg"
+  curl "$artworklnk" 2>/dev/null > "${USER_PATH}/spotifytemp/temp.jpg"
   # converts the file to 200x200
-  sips -z 500 500 "/Users/francesco/Documents/BitBar Plugins/spotifytemp/temp.jpg" > /dev/null 2> /dev/null
+  sips -z 500 500 "${USER_PATH}/spotifytemp/temp.jpg" > /dev/null 2> /dev/null
 fi
 # set the artwork img in the 'artwork' variable
-artwork=$( base64 "/Users/francesco/Documents/BitBar Plugins/spotifytemp/temp.jpg")
+artwork=$( base64 "${USER_PATH}/spotifytemp/temp.jpg")
 
 
 
